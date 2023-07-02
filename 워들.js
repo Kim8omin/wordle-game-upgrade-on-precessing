@@ -65,13 +65,21 @@ const pressKey = (event)=> {
 
     
 
-    if (event.key==='Backspace') $backSpace();
+    if (event.key==='Backspace') {
+        $backSpace();
+    } 
     else if (index === 5) {
-        if (event.key === "Enter") $enter();
-        else return;
-    }else if (keyCode >= 65 && keyCode <= 90) {
+        if (event.key === "Enter") {
+            $enter();
+        } else return;
+    }
+    else if (keyCode >= 65 && keyCode <= 90) {
         thisBox.innerText = key;
         index += 1;
+    }
+    else if (attempt===6) {
+        displayOver();
+        window.removeEventListener("keydown", pressKey);
     }
 };
 
@@ -95,3 +103,57 @@ window.addEventListener("keydown",pressKey);
 }; //appStart를 닫아주는 중괄호 
 
 appStart(); 
+
+function usingKeyboard(event) {
+//키보드 모양 마우스로 클릭
+    const clickKeyBoard = () => {
+        const clickedKey = event.target.dataset.key;
+    const clickedBox = document.querySelector(
+        `.box[data-index="${attempt}${index}"]`);
+    clickedBox.innerText = clickedKey;
+//index를 하나씩 늘려주고 다음 줄로 바꿔주기 
+    if (index<5) {
+    index+=1;
+    }
+    else if (attempt>5) {
+        attempt+=1;
+        index=0;
+    } else return;
+//클릭 시 색상추가 
+    $key.forEach (el=> {
+        if (el.dataset.key===clickedKey) {
+        el.style.backgroundColor = "pink";
+    }else {
+        el.style.backgroundColor ="";
+    }
+    });
+    $key1.forEach (el=> {
+        if (el.dataset.key===clickedKey) {
+        el.style.backgroundColor = "yellow";
+    }else {
+        el.style.backgroundColor ="";
+    }
+    });
+
+    console.log(`눌린 키: ${clickedKey}`);
+    };
+
+
+    
+clickKeyBoard();
+
+}
+    
+
+
+
+const $key = document.querySelectorAll('.key');
+const $key1 = document.querySelectorAll('.key1');
+$key.forEach (el => {
+    el.addEventListener('click',usingKeyboard);
+});
+$key1.forEach (el => {
+    el.addEventListener('click',usingKeyboard);
+});
+
+usingKeyboard();
