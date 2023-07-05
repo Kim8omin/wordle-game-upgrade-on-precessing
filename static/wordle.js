@@ -1,4 +1,3 @@
-const answer="APPLE";
 let index=0;
 let attempt=0;
 let endingTime;
@@ -25,8 +24,12 @@ const displayOver = () => {
         clearInterval(endingTime);
     };
 
-    const $enter= () => {
+    const $enter= async () => {
         let correrctIndex= 0;
+
+        const responseServer = await fetch("/answer");
+        const object_answer=await responseServer.json();
+        const answer=object_answer.answer;
 
         for (let i = 0; i < 5; i++) {
             const $box = document.querySelector(`.box[data-index="${attempt}${i}"]`);
